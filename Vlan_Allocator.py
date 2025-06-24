@@ -19,18 +19,14 @@ class VLANAllocator:
         while True:
             try:
                 input_str = input("Entrez l'adresse réseau principale avec le masque (ex: 192.168.1.0/24): ")
-                
                 if '/' not in input_str:
                     print("[bold red]Erreur: La notation CIDR (ex: /24) est requise.[/bold red]")
                     continue
-
                 self.network = ipaddress.IPv4Network(input_str, strict=False)
-
                 if self.network.prefixlen >= 30:
                     print(f"[bold red]Erreur: Le réseau {self.network} est trop petit pour être divisé en sous-réseaux avec des hôtes.[/bold red]")
                     print("[yellow]Veuillez choisir un réseau plus grand (ex: /29 ou moins).[/yellow]")
                     continue
-
                 self.available_networks = [self.network]
                 break
             except ValueError:
@@ -40,12 +36,9 @@ class VLANAllocator:
         """Demande les infos pour chaque VLAN de manière interactive."""
         self.console.print("\n[bold cyan]Configuration des VLANs (laissez le nom vide pour terminer)[/bold cyan]")
         vlan_counter = 1
-        
         while True:
             print(f"\n--- VLAN/LAN #{vlan_counter} ---")
-            
             vlan_name = input(f"Nom du LAN (ex: Serveurs, Marketing): ").strip()
-            
             if not vlan_name:
                 if not self.vlans:
                     confirm_exit = input("Aucun VLAN configuré. Voulez-vous vraiment continuer sans VLAN ? (o/N): ").lower()
@@ -54,26 +47,16 @@ class VLANAllocator:
                     else:
                         continue
                 break
-
             while True:
                 try:
                     hosts_str = input(f"Nombre d'hôtes pour le LAN '{vlan_name}': ")
                     hosts = int(hosts_str)
-                    
-                    
                     if hosts <= 0:
                         print("[yellow]Erreur: Le nombre d'hôtes doit être supérieur ou égal à 1.[/yellow]")
                         continue
-                    
                     needed_size = hosts + 2
                     prefix = 32 - (needed_size - 1).bit_length()
-                    
-                    self.vlans.append({
-                        'id': vlan_counter,
-                        'name': vlan_name,
-                        'hosts_needed': hosts,
-                        'needed_prefix': prefix
-                    })
+                    self.vlans.append({'id': vlan_counter, 'name': vlan_name, 'hosts_needed': hosts, 'needed_prefix': prefix})
                     vlan_counter += 1
                     break
                 except ValueError:
@@ -83,10 +66,8 @@ class VLANAllocator:
         """Vérifie si tous les besoins en VLANs peuvent tenir dans le réseau principal."""
         if not self.vlans:
             return True
-
         total_required_addresses = sum(2**(32 - vlan['needed_prefix']) for vlan in self.vlans)
         available_addresses = self.network.num_addresses
-
         if total_required_addresses > available_addresses:
             self.console.print("\n" + "="*70, style="bold red")
             self.console.print("[bold red]ERREUR DE CAPACITÉ : L'espace total requis dépasse la taille du réseau principal.[/bold red]")
@@ -95,7 +76,6 @@ class VLANAllocator:
             self.console.print("[bold red]Veuillez choisir un réseau principal plus grand ou réduire le nombre d'hôtes.[/bold red]")
             self.console.print("="*70, style="bold red")
             return False
-        
         return True
 
     def allocate_subnets(self) -> None:
@@ -111,11 +91,7 @@ class VLANAllocator:
                         subnet_generator = net.subnets(new_prefix=prefix)
                         allocated_subnet = next(subnet_generator)
                         remaining_subnets = list(subnet_generator)
-                        self.subnets.append({
-                            'vlan_name': vlan['name'],
-                            'hosts_needed': vlan['hosts_needed'],
-                            'subnet': allocated_subnet
-                        })
+                        self.subnets.append({'vlan_name': vlan['name'], 'hosts_needed': vlan['hosts_needed'], 'subnet': allocated_subnet})
                         self.available_networks.pop(i)
                         self.available_networks.extend(remaining_subnets)
                         allocated = True
@@ -132,20 +108,36 @@ class VLANAllocator:
         if not self.subnets:
             self.console.print("\nAucun sous-réseau n'a été alloué.", style="yellow")
             return
+        
         table = Table(title="Sous-réseaux Alloués (VLSM)", show_header=True, header_style="bold magenta")
         table.add_column("Nom du LAN", style="cyan", no_wrap=True)
         table.add_column("Hôtes Requis", justify="right")
         table.add_column("Hôtes Alloués", justify="right")
-        table.add_column("Adresse Réseau", style="yellow")
-        table.add_column("Masque (CIDR)", style="green")
-        table.add_column("Plage Utilisable", style="green")
-        table.add_column("Broadcast", style="yellow")
+        table.add_column("Adresse Réseau", style="yellow", no_wrap=True)
+        table.add_column("Masque (CIDR)", style="green", no_wrap=True)
+        table.add_column("Plage Utilisable", style="green", no_wrap=True)
+        table.add_column("Broadcast", style="yellow", no_wrap=True)
+
         self.subnets.sort(key=lambda x: x['subnet'].network_address)
-        for sub in self.subnets:
+        
+        num_subnets = len(self.subnets)
+        for i, sub in enumerate(self.subnets):
             s = sub['subnet']
             hosts_allocated = s.num_addresses - 2
             plage = f"{s.network_address + 1} - {s.broadcast_address - 1}"
-            table.add_row(sub['vlan_name'], str(sub['hosts_needed']), str(hosts_allocated if hosts_allocated > 0 else 0), str(s.network_address), f"{s.netmask} (/{s.prefixlen})", plage, str(s.broadcast_address))
+            table.add_row(
+                sub['vlan_name'], 
+                str(sub['hosts_needed']), 
+                str(hosts_allocated if hosts_allocated > 0 else 0), 
+                str(s.network_address), 
+                f"{s.netmask} (/{s.prefixlen})", 
+                plage, 
+                str(s.broadcast_address)
+            )
+            
+            if i < num_subnets - 1:
+                table.add_section()
+                
         self.console.print(table)
 
     def run(self) -> None:
@@ -161,6 +153,8 @@ class VLANAllocator:
             self.display_results()
         elif not self.vlans:
             self.console.print("\n[yellow]Aucun VLAN n'a été configuré. Fin du programme.[/yellow]")
+
+        input("\nAppuyez sur Entrée pour quitter...")
 
 if __name__ == "__main__":
     allocator = VLANAllocator()

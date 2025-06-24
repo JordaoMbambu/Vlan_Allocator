@@ -121,14 +121,6 @@
   ('VCRUNTIME140_1.dll',
    'C:\\Users\\HP\\AppData\\Local\\Programs\\Python\\Python313\\VCRUNTIME140_1.dll',
    'BINARY'),
-  ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\METADATA',
-   'C:\\Users\\HP\\Documents\\L-IUT '
-   'RT\\L-PROJECTS\\VLAN_ALLOCATOR\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\METADATA',
-   'DATA'),
-  ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\RECORD',
-   'C:\\Users\\HP\\Documents\\L-IUT '
-   'RT\\L-PROJECTS\\VLAN_ALLOCATOR\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\RECORD',
-   'DATA'),
   ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\LICENSE',
    'C:\\Users\\HP\\Documents\\L-IUT '
    'RT\\L-PROJECTS\\VLAN_ALLOCATOR\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\LICENSE',
@@ -137,6 +129,18 @@
    'C:\\Users\\HP\\Documents\\L-IUT '
    'RT\\L-PROJECTS\\VLAN_ALLOCATOR\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\WHEEL',
    'DATA'),
+  ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\METADATA',
+   'C:\\Users\\HP\\Documents\\L-IUT '
+   'RT\\L-PROJECTS\\VLAN_ALLOCATOR\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\METADATA',
+   'DATA'),
+  ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\INSTALLER',
+   'C:\\Users\\HP\\Documents\\L-IUT '
+   'RT\\L-PROJECTS\\VLAN_ALLOCATOR\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\INSTALLER',
+   'DATA'),
+  ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\RECORD',
+   'C:\\Users\\HP\\Documents\\L-IUT '
+   'RT\\L-PROJECTS\\VLAN_ALLOCATOR\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\RECORD',
+   'DATA'),
   ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\top_level.txt',
    'C:\\Users\\HP\\Documents\\L-IUT '
    'RT\\L-PROJECTS\\VLAN_ALLOCATOR\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\top_level.txt',
@@ -144,10 +148,6 @@
   ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\REQUESTED',
    'C:\\Users\\HP\\Documents\\L-IUT '
    'RT\\L-PROJECTS\\VLAN_ALLOCATOR\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\REQUESTED',
-   'DATA'),
-  ('setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\INSTALLER',
-   'C:\\Users\\HP\\Documents\\L-IUT '
-   'RT\\L-PROJECTS\\VLAN_ALLOCATOR\\venv\\Lib\\site-packages\\setuptools\\_vendor\\importlib_metadata-8.0.0.dist-info\\INSTALLER',
    'DATA'),
   ('setuptools\\_vendor\\jaraco\\text\\Lorem ipsum.txt',
    'C:\\Users\\HP\\Documents\\L-IUT '
